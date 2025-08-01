@@ -1,7 +1,7 @@
 export default function Dashboard() {
     return (
         <div>
-            <h1>Welcome to the dashboard</h1>
+            <h1 className="bg-red">Welcome to the dashboard</h1>
         </div>
     );
 }
