@@ -26,7 +26,7 @@ const menuItems: MenuItem[] = [
 
 export default function Navigation() {
   return (
-    <div className="w-72 min-h-screen bg-gradient-to-b from-gray-900 to-black text-white shadow-lg rounded-r-xl flex flex-col bg-[url('/images/sidebar-bg.jpg')] bg-cover bg-center">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white shadow-lg rounded-r-xl flex flex-col bg-[url('/images/sidebar-bg.jpg')] bg-cover bg-center">
       {/* Logo */}
       <div className="p-6 border-b border-gray-700 text-center">
         <h1 className="text-3xl font-bold tracking-widest">BotZilla</h1>
@@ -34,14 +34,14 @@ export default function Navigation() {
       </div>
 
       {/* Profile */}
-      <div className="p-5 border-b border-gray-700 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+      <div className="py-5 border-b border-gray-700 flex items-center justify-between">
+        <div className="flex items-center space-x-4 w-full justify-center">
           <img
             src="https://randomuser.me/api/portraits/women/44.jpg"
             alt="User Avatar"
             className="w-12 h-12 rounded-full border border-gray-500"
           />
-          <span className="text-base font-medium">0xGhost</span>
+          <span className="text-lg">0xGhost</span>
         </div>
       </div>
 

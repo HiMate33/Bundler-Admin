@@ -8,7 +8,6 @@ import {
   DollarSign,
   Wallet,
   Activity,
-  UserCheckIcon,
   ShieldCheck,
   UserPlus,
 } from "lucide-react";

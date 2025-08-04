@@ -24,13 +24,13 @@ export default function Header() {
       {/* Right - Icons */}
       <div className="flex items-center gap-6">
         {/* Notification with badge */}
-        <div className="relative">
+        <div className="relative cursor-pointer">
           <Bell size={24} className="text-gray-600" />
           <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
             5
           </span>
         </div>
-        <User size={24} className="text-gray-600" />
+        <User size={24} className="text-gray-600 cursor-pointer" />
       </div>
     </div>
   );
