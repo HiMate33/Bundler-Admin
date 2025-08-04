@@ -15,7 +15,7 @@ import {
 export default function Dashboard() {
   return (
     <div>
-      <div className="grid grid-cols-1  md:grid-cols-2 gap-8 p-8">
+      <div className="grid grid-cols-1  md:grid-cols-2 gap-8 p-1 md:p-8">
 
       {/* Total Users */}
       <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col">
@@ -92,7 +92,7 @@ export default function Dashboard() {
 
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-1 gap-8 p-8">
+    <div className="grid grid-cols-1 md:grid-cols-1 md:gap-8 p-2 md:p-8">
       
   <div className="bg-white rounded-2xl shadow-lg p-6 ">
   
