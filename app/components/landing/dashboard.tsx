@@ -109,8 +109,8 @@ export default function Dashboard() {
   </div>
   
 
-  <div className="flex items-center gap-6">
-    <div className="w-1/2 ">
+  <div className=" md:flex items-center gap-6">
+    <div className="md:w-1/2 ">
     {/* Each admin entry */}
     {[
   { email: "caleb@gmail.com", username: "Cally" },
@@ -136,10 +136,10 @@ export default function Dashboard() {
 ))}
   </div>
   {/* Left Side - Big Admin Icon */}
-  <div className="w-1/2 flex justify-center items-center">
+  <div className="md:w-1/2 hidden md:flex justify-center items-center">
     <div className="bg-gray-500 p-10 rounded-full shadow-inner">
       {/* Replace with Lucide <ShieldCheck /> or any admin icon */}
-      <span className="text-6xl text-white">
+      <span className="text-6xl  text-white">
         <UserPlus size={50} />
       </span>
     </div>
