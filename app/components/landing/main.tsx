@@ -14,8 +14,8 @@ export default function Main() {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col flex-grow bg-gray-100 ml-0 md:ml-75"> {/* 👈 push content right */}
-        <div className="bg-white shadow">
+      <div className="flex flex-col flex-grow bg-gray-100 ml-0 md:ml-75">
+        <div className="bg-white shadow sticky top-0 z-30">
           <Header />
         </div>
         <div className="flex-grow overflow-y-auto p-6">
