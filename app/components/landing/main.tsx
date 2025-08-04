@@ -13,7 +13,7 @@ export default function Main() {
 
       {/* Main Content */}
       <div className="flex flex-col flex-grow bg-gray-100">
-      <div className="h-16 bg-white shadow flex items-center justify-between px-6">
+      <div className="bg-white shadow">
         <Header />
       </div>
       <div className="flex-grow overflow-y-auto p-6">
