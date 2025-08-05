@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
-import { Wallet, DollarSign } from "lucide-react";
+import { DollarSign } from "lucide-react";
 
 const pieData = [
   { name: "Trading", value: 7.5 },
@@ -13,7 +13,36 @@ const pieData = [
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
 
+const initialFees = {
+  "Create Token": "0.2",
+  "Freeze Mint": "0.1",
+  "Weekly Subscription": "1.7",
+  "Monthly Subscription": "3.4",
+  "Copy Trading": "2.0",
+  "Bundle": "1.2",
+  "Sniping": "7.2",
+  "Book Trade": "1.2",
+  "Copy Trade": "5.4",
+};
+
 export default function Revenue() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [fees, setFees] = useState(initialFees);
+
+  const handleFeeChange = (key: string, value: string) => {
+    setFees((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+    console.log("Updated Fees:", fees); // You can handle save logic here (e.g. API call)
+  };
+
+  const handleCancel = () => {
+    setFees(initialFees);
+    setIsEditing(false);
+  };
+
   return (
     <div className="p-6 space-y-8">
       <h1 className="text-2xl font-bold mb-4">Revenue Overview</h1>
@@ -70,18 +99,50 @@ export default function Revenue() {
       <div className="bg-white rounded-xl shadow p-4">
         <h2 className="font-semibold text-lg mb-2">Fees</h2>
         <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
-          <div>• Create Token</div> <div>0.2</div>
-          <div>• Freeze Mint</div> <div>0.1</div>
-          <div>• Weekly Subscription</div> <div>1.7</div>
-          <div>• Monthly Subscription</div> <div>3.4</div>
-          <div>• Copy Trading</div> <div>2.0</div>
-          <div>• Bundle</div> <div>1.2</div>
-          <div>• Sniping</div> <div>7.2</div>
-          <div>• Book Trade</div> <div>1.2</div>
-          <div>• Copy Trade</div> <div>5.4</div>
+          {Object.entries(fees).map(([label, value]) => (
+            <React.Fragment key={label}>
+              <div>• {label}</div>
+              <div>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => handleFeeChange(label, e.target.value)}
+                    className="border px-2 py-1 w-20 text-right rounded"
+                  />
+                ) : (
+                  <span>{value}</span>
+                )}
+              </div>
+            </React.Fragment>
+          ))}
         </div>
-        <div className="mt-4 text-right">
-          <button className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">Edit Fee</button>
+
+        {/* Buttons */}
+        <div className="mt-4 text-right space-x-2">
+          {isEditing ? (
+            <>
+              <button
+                onClick={handleSave}
+                className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition"
+              >
+                Save
+              </button>
+              <button
+                onClick={handleCancel}
+                className="bg-gray-300 text-gray-700 px-4 py-1 rounded hover:bg-gray-400 transition"
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
+            >
+              Edit Fee
+            </button>
+          )}
         </div>
       </div>
     </div>
