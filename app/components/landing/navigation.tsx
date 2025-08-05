@@ -59,7 +59,7 @@ export default function Navigation({activeTab, setActiveTab}: NavigationProps) {
           <button
             key={item.key}
             onClick={() => setActiveTab(item.key)}
-            className={`w-full flex items-center space-x-4 p-2 rounded-lg transition-all duration-200 ${
+            className={`cursor-pointer w-full flex items-center space-x-4 p-2 rounded-lg transition-all duration-200 ${
               activeTab === item.key ? "bg-gray-800 text-white" : "text-gray-200 hover:bg-gray-800"
             }`}
           >
