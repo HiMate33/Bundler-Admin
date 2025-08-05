@@ -42,7 +42,7 @@ export default function Main() {
       {/* Main Content */}
       <div className="flex flex-col flex-grow bg-gray-100 ml-0 md:ml-65">
         <div className="bg-white shadow sticky top-0 z-30">
-          <Header activeTab={activeTab} />
+          <Header activeTab={activeTab}  setActiveTab={setActiveTab}/>
         </div>
         <div className="flex-grow overflow-y-auto p-3">
           {renderContent()}
