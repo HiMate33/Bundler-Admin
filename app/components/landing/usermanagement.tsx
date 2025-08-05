@@ -18,37 +18,20 @@ type User = {
   type: "Bot" | "Human";
 };
 
-const mockUsers: User[] = [
-  {
-    id: 1,
-    telegramId: "123456",
-    username: "@john_doe",
-    mainWallet: "0xABC123",
-    bundledWallets: 3,
-    type: "Human",
-  },
-  {
-    id: 2,
-    telegramId: "789012",
-    username: "@bot_killer",
-    mainWallet: "0xXYZ456",
-    bundledWallets: 5,
-    type: "Bot",
-  },
-  {
-    id: 3,
-    telegramId: "246810",
-    username: "@alice_dev",
-    mainWallet: "0xFFF987",
-    bundledWallets: 2,
-    type: "Human",
-  },
-];
+const mockUsers: User[] = Array.from({ length: 50 }, (_, i) => ({
+  id: i + 1,
+  telegramId: `${100000 + i}`,
+  username: `@user${i + 1}`,
+  mainWallet: `0xWALLET${i + 1}`,
+  bundledWallets: Math.floor(Math.random() * 6),
+  type: i % 4 === 0 ? "Bot" : "Human",
+}));
 
 export default function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+  const [visibleCount, setVisibleCount] = useState(10);
 
   const toggleSelect = (id: number) => {
     setSelectedUsers((prev) =>
@@ -68,10 +51,12 @@ export default function UserManagement() {
       user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const visibleUsers = filteredUsers.slice(0, visibleCount);
+
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-4 space-y-6">
       {/* Search Bar */}
-      <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-md w-full max-w-md">
+      <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-md w-full">
         <Search className="text-gray-400 mr-2" size={18} />
         <input
           type="text"
@@ -83,8 +68,7 @@ export default function UserManagement() {
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Users Card */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col">
           <div className="flex items-center gap-4">
             <div className="bg-orange-500 p-4 rounded-lg shadow">
@@ -97,13 +81,12 @@ export default function UserManagement() {
             </div>
           </div>
           <div className="mt-4 flex justify-center">
-            <div className="w-32 h-32 border-4 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-              <PieChart className="text-gray-400" size={32} />
+            <div className="w-24 h-24 sm:w-32 sm:h-32 border-4 border-dashed border-gray-300 rounded-full flex items-center justify-center">
+              <PieChart className="text-gray-400" size={28} />
             </div>
           </div>
         </div>
 
-        {/* Subscribers Card */}
         <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col">
           <div className="flex items-center gap-4">
             <div className="bg-green-500 p-4 rounded-lg shadow">
@@ -116,15 +99,15 @@ export default function UserManagement() {
             </div>
           </div>
           <div className="mt-4 flex justify-center">
-            <div className="w-32 h-32 border-4 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-              <PieChart className="text-gray-400" size={32} />
+            <div className="w-24 h-24 sm:w-32 sm:h-32 border-4 border-dashed border-gray-300 rounded-full flex items-center justify-center">
+              <PieChart className="text-gray-400" size={28} />
             </div>
           </div>
         </div>
       </div>
 
       {/* Bot Users */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1">
         <div className="bg-white rounded-2xl shadow-lg p-4">
           <div className="flex items-center gap-4">
             <div className="bg-pink-500 p-4 rounded-lg shadow">
@@ -141,8 +124,8 @@ export default function UserManagement() {
         </div>
       </div>
 
-      {/* User Table */}
-      <div className="bg-white rounded-2xl shadow p-4 overflow-auto">
+      {/* Table (Desktop) */}
+      <div className="bg-white rounded-2xl shadow p-4 overflow-auto hidden md:block">
         <h2 className="text-lg font-semibold mb-4">User List</h2>
         <table className="min-w-full text-sm text-left">
           <thead className="bg-gray-100 text-gray-600 uppercase">
@@ -156,7 +139,7 @@ export default function UserManagement() {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user) => (
+            {visibleUsers.map((user) => (
               <tr key={user.id} className="border-t">
                 <td className="p-2">
                   <input
@@ -174,16 +157,59 @@ export default function UserManagement() {
             ))}
           </tbody>
         </table>
+        {visibleCount < filteredUsers.length && (
+          <div className="text-center mt-4">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 10)}
+              className="text-blue-500 hover:underline"
+            >
+              Load More
+            </button>
+          </div>
+        )}
+        {filteredUsers.length === 0 && (
+          <p className="text-center text-gray-400 mt-4">No users found.</p>
+        )}
+      </div>
+
+      {/* Cards (Mobile) */}
+      <div className="md:hidden space-y-4">
+        {visibleUsers.map((user) => (
+          <div key={user.id} className="bg-white p-4 rounded-xl shadow flex flex-col gap-1">
+            <div className="flex justify-between items-center">
+              <p className="text-gray-700 font-semibold">{user.username}</p>
+              <input
+                type="checkbox"
+                checked={selectedUsers.includes(user.id)}
+                onChange={() => toggleSelect(user.id)}
+              />
+            </div>
+            <p className="text-gray-500 text-sm">Telegram ID: {user.telegramId}</p>
+            <p className="text-gray-500 text-sm">Wallet: {user.mainWallet}</p>
+            <p className="text-gray-500 text-sm">Bundled: {user.bundledWallets}</p>
+            <p className="text-gray-500 text-sm">Type: {user.type}</p>
+          </div>
+        ))}
+        {visibleCount < filteredUsers.length && (
+          <div className="text-center">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 10)}
+              className="text-blue-500 hover:underline"
+            >
+              Load More
+            </button>
+          </div>
+        )}
         {filteredUsers.length === 0 && (
           <p className="text-center text-gray-400 mt-4">No users found.</p>
         )}
       </div>
 
       {/* Actions */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <button
           onClick={() => alert("Users List shown above")}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow"
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow w-full sm:w-auto"
         >
           View Users
         </button>
@@ -194,7 +220,7 @@ export default function UserManagement() {
             selectedUsers.length > 0
               ? "bg-red-500 hover:bg-red-600"
               : "bg-gray-300 cursor-not-allowed"
-          } text-white px-4 py-2 rounded-md shadow`}
+          } text-white px-4 py-2 rounded-md shadow w-full sm:w-auto`}
         >
           Ban Selected Users
         </button>
