@@ -6,7 +6,23 @@ import {
   MoreVertical,
 } from "lucide-react";
 
-export default function Header() {
+
+type HeaderProps = {
+  activeTab: string;
+}
+
+
+const tabLabels: Record<string, string> = {
+  dashboard: "Dashboard",
+  "user-management": "User Management",
+  analytics: "Analytics & Insight",
+  revenue: "Revenue & Fees",
+  "add-admin": "Add Admin",
+};
+
+
+
+export default function Header({ activeTab }: HeaderProps) {
   return (
     <div className="flex items-center shadow justify-between w-full px-6 py-2 bg-gray-100 rounded-b-md">
       {/* Left - Menu + Title */}
@@ -18,7 +34,9 @@ export default function Header() {
 
       {/* Center - Search */}
       <div className="flex items-center justify-center gap-2 max-w-md flex-1 mx-8 w-full">
-        <h1 className="text-gray-700 text-lg">Dashboard</h1>
+        <h1 className="text-gray-700 text-lg">
+           {tabLabels[activeTab] || "Dashboard"}
+        </h1>
       </div>
 
       {/* Right - Icons */}
