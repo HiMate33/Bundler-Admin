@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
 import {
   LayoutDashboard,
@@ -9,6 +9,8 @@ import {
   Coins,
   UserPlus,
 } from "lucide-react";
+import {useSession} from "next-auth/react"
+
 
 type MenuItem = {
   label: string;
@@ -32,6 +34,24 @@ const menuItems: MenuItem[] = [
   { label: "Add Admin", icon: <UserPlus size={20} />, key: "add-admin" },
 ];
 export default function Navigation({activeTab, setActiveTab}: NavigationProps) {
+
+
+  const { data: session } = useSession()
+  const [adminData, setAdminData] = useState<{ name: string; image: string } | null>(null)
+
+  useEffect(() => {
+    if (session && session.user && session.user.email) {
+      const fetchAdmin = async () => {
+        const res = await fetch(`/api/admin/getAdminByemail?email=${session.user!.email}`)
+        const data = await res.json()
+        setAdminData(data)
+      }
+
+      fetchAdmin()
+    }
+  }, [session])
+
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white shadow-lg rounded-r-xl flex flex-col bg-[url('/images/sidebar-bg.jpg')] bg-cover bg-center">
       {/* Logo */}
@@ -43,12 +63,15 @@ export default function Navigation({activeTab, setActiveTab}: NavigationProps) {
       {/* Profile */}
       <div className="py-3 border-b border-gray-700 flex items-center justify-between">
         <div className="flex items-center space-x-4 w-full justify-center">
-          <img
-            src="https://randomuser.me/api/portraits/women/44.jpg"
-            alt="User Avatar"
-            className="w-8 h-8 rounded-full border border-gray-500"
-          />
-          <span className="text-base">0xGhost</span>
+          
+           {adminData?.image && (
+        <img src={adminData.image || "/defaultavatar.png"} alt="Admin" className="w-8 h-8 rounded-full border border-gray-500" />
+      )}
+          
+        
+          <span className="text-base">
+           {adminData?.name ?? "Admin" }
+          </span>
         </div>
       </div>
 

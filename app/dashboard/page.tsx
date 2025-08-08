@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-//import AddAdminForm from "../component/AddAdminForm";
-//import AdminList from "../component/AdminList";
+import AddAdminForm from "../components/AddAdminForm";
+import AdminList from "../components/AdminList";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -18,11 +18,11 @@ export default async function DashboardPage() {
     <div className="p-10">
       <h1 className="text-2xl font-bold">Welcome, {session.user?.name}!</h1>
       Hello how are you doing hoping to seeing you very soon 
-      {/*
+      
       <AddAdminForm />
       <AdminList />
    
-      */}
+      
        </div>
   );
 }

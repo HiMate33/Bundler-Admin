@@ -17,6 +17,28 @@ import {
 
 
 export default function Dashboard() {
+
+
+
+  const [admins, setAdmins] = useState<{ name: string; email: string }[]>([]);
+
+useEffect(() => {
+  const fetchAdmins = async () => {
+    try {
+      const res = await fetch("/api/admin/list");
+      const data = await res.json();
+      setAdmins(data.admins);
+    } catch (error) {
+      console.error("Failed to fetch admins:", error);
+    }
+  };
+
+  fetchAdmins();
+}, []);
+
+
+
+
   return (
     <div>
       <div className="grid grid-cols-1  md:grid-cols-2 gap-8 p-1 md:p-8">
@@ -30,7 +52,7 @@ export default function Dashboard() {
           <div className="flex-1 text-right">
             <p className="text-gray-500 text-sm font-medium">Total Users</p>
             <h3 className="text-2xl font-bold text-gray-800">
-              31,500
+              21
             </h3>
           </div>
         </div>
@@ -49,7 +71,7 @@ export default function Dashboard() {
           </div>
           <div className="flex-1 text-right">
             <p className="text-gray-500 text-sm font-medium">Subscribers</p>
-            <h3 className="text-2xl font-bold text-gray-800">2,601</h3>
+            <h3 className="text-2xl font-bold text-gray-800">2</h3>
           </div>
         </div>
         <hr className="my-3" />
@@ -67,7 +89,7 @@ export default function Dashboard() {
           </div>
           <div className="flex-1 text-right">
             <p className="text-gray-500 text-sm font-medium">Revenues</p>
-            <h3 className="text-2xl font-bold text-gray-800">89.025 <span className="text-gray-400">sol</span></h3>
+            <h3 className="text-2xl font-bold text-gray-800">2.15 <span className="text-gray-400">sol</span></h3>
           </div>
         </div>
         <hr className="my-3" />
@@ -84,7 +106,7 @@ export default function Dashboard() {
           </div>
           <div className="flex-1 text-right">
             <p className="text-gray-500 text-sm font-medium">Active Users</p>
-            <h3 className="text-2xl font-bold text-gray-800">+1,976</h3>
+            <h3 className="text-2xl font-bold text-gray-800">+2</h3>
           </div>
         </div>
         <hr className="my-3" />
@@ -116,28 +138,23 @@ export default function Dashboard() {
   <div className=" md:flex items-center gap-6">
     <div className="md:w-1/2 ">
     {/* Each admin entry */}
-    {[
-  { email: "Neller@gmail.com", username: "Neller" },
-  { email: "Levai@gmail.com", username: "Levai" },
-  { email: "crptosiz@gmail.com", username: "Aziz" },
-].map((admin, i, arr) => (
+    {admins.map((admin, i, arr) => (
   <div
     key={i}
     className={`flex justify-between items-center py-1 ${
       i !== arr.length - 1 ? "border-b border-gray-200" : ""
     }`}
   >
-    {/* Left Side - Icon and Username */}
     <div className="flex gap-2 items-center">
       <User size={18} className="text-gray-500" />
-      <p className="text-lg text-gray-800">{admin.username}</p>
+      <p className="text-lg text-gray-800">{admin.name}</p>
     </div>
-    {/* Right Side - Email */}
     <div className="flex gap-3">
       <p className="text-base text-gray-600">{admin.email}</p>
     </div>
   </div>
 ))}
+
   </div>
   {/* Left Side - Big Admin Icon */}
   <div className="md:w-1/2 hidden md:flex justify-center items-center">
