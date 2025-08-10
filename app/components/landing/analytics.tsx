@@ -25,23 +25,12 @@ const mockFeatureUsage = [
   { name: "Volume Tracker", count: 105 },
 ];
 
-const mockIncome = {
-  totalEarnings: 832.25,
-  sources: [
-    { name: "Copy Trading", value: 300 },
-    { name: "Sniping", value: 200 },
-    { name: "Create Token", value: 150 },
-    { name: "Volume Simulator", value: 100 },
-    { name: "Others", value: 82.25 },
-  ],
-};
-
 const mockActiveUsers = {
   last24h: 72,
   last7d: 312,
 };
 
-const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1"];
+const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1", "#8B5CF6", "#EC4899"];
 
 export default function Analytics() {
   const [featureData, setFeatureData] = useState<{ name: string; count: number }[]>([]);
@@ -50,11 +39,34 @@ export default function Analytics() {
   const [activeUsers, setActiveUsers] = useState({ last24h: 0, last7d: 0 });
 
   useEffect(() => {
-    // Simulate fetching from DB/API
+    // Static mock for feature usage and active users
     setFeatureData(mockFeatureUsage);
-    setIncomeData(mockIncome.sources);
-    setTotalEarnings(mockIncome.totalEarnings);
     setActiveUsers(mockActiveUsers);
+
+    // Fetch wallets & balances for earnings
+    async function fetchWalletData() {
+      try {
+        const res = await fetch("/api/wallets");
+        const data = await res.json();
+
+        if (data?.totalSol !== undefined) {
+          setTotalEarnings(data.totalSol); // total SOL in all wallets
+        }
+
+        if (Array.isArray(data?.wallets)) {
+          // Pie chart data from each wallet balance
+          const pieData = data.wallets.map((w: { type: any; address: any; balance: any; }) => ({
+            name: w.type || w.address,
+            value: w.balance,
+          }));
+          setIncomeData(pieData);
+        }
+      } catch (err) {
+        console.error("Failed to fetch wallet balances:", err);
+      }
+    }
+
+    fetchWalletData();
   }, []);
 
   return (
@@ -72,8 +84,10 @@ export default function Analytics() {
           <p className="text-2xl font-bold text-green-600">{activeUsers.last7d}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow text-center">
-          <h3 className="text-gray-500">Total Earnings ($)</h3>
-          <p className="text-2xl font-bold text-emerald-600">${totalEarnings.toFixed(2)}</p>
+          <h3 className="text-gray-500">Total Earnings (SOL)</h3>
+          <p className="text-2xl font-bold text-emerald-600">
+            {totalEarnings.toFixed(4)}
+          </p>
         </div>
       </div>
 
@@ -92,7 +106,7 @@ export default function Analytics() {
 
       {/* Earnings Breakdown */}
       <div className="bg-white rounded-lg shadow p-4">
-        <h2 className="text-lg font-semibold mb-4">Earnings Breakdown</h2>
+        <h2 className="text-lg font-semibold mb-4">Earnings Breakdown (by Wallet)</h2>
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
             <Pie

@@ -19,6 +19,7 @@ import {
 export default function Dashboard() {
   const [admins, setAdmins] = useState<{ name: string; email: string }[]>([]);
   const [stats, setStats] = useState({ totalUsers: 0, subscribedUsers: 0 });
+  const [totalEarnings, setTotalEarnings] = useState(0);
 
 useEffect(() => {
   const fetchStats = async () => {
@@ -48,6 +49,27 @@ useEffect(() => {
 
   fetchAdmins();
 }, []);
+
+
+
+useEffect(() => {
+
+    async function fetchWalletData() {
+      try {
+        const res = await fetch("/api/wallets");
+        const data = await res.json();
+
+        if (data?.totalSol !== undefined) {
+          setTotalEarnings(data.totalSol); // total SOL in all wallets
+        }
+      } catch (err) {
+        console.error("Failed to fetch wallet balances:", err);
+      }
+    }
+
+    fetchWalletData();
+  }, []);
+
 
 
 
@@ -99,7 +121,7 @@ useEffect(() => {
           </div>
           <div className="flex-1 text-right">
             <p className="text-gray-500 text-sm font-medium">Revenues</p>
-            <h3 className="text-2xl font-bold text-gray-800">2.15 <span className="text-gray-400">sol</span></h3>
+            <h3 className="text-2xl font-bold text-gray-800">{totalEarnings.toFixed(4)} <span className="text-gray-400">sol</span></h3>
           </div>
         </div>
         <hr className="my-3" />

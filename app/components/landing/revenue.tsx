@@ -4,20 +4,7 @@ import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { DollarSign } from "lucide-react";
 
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
-
-const initialFees = {
-  "Create Token": "0.2",
-  "Freeze Mint": "0.1",
-  "Weekly Subscription": "1.7",
-  "Monthly Subscription": "3.4",
-  "Copy Trading": "2.0",
-  "Bundle": "1.2",
-  "Sniping": "7.2",
-  "Book Trade": "1.2",
-  "Copy Trade": "5.4",
-};
-
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#00C49F"];
 
 
 export default function Revenue() {

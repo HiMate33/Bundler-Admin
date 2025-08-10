@@ -30,7 +30,9 @@ const initialFees: Omit<FeesDoc, "_id"> = {
 export async function GET() {
   try {
     const client = await clientPromise;
-    const db = client.db("yourDBName");
+
+    // Use "test" database explicitly
+    const db = client.db("test");
     const feesCollection = db.collection<FeesDoc>("fees");
 
     let feesDoc = await feesCollection.findOne({ _id: "fees" });
@@ -54,7 +56,9 @@ export async function PUT(req: Request) {
   try {
     const updates: Partial<FeesDoc> = await req.json();
     const client = await clientPromise;
-    const db = client.db("yourDBName");
+
+    // Use "test" database explicitly
+    const db = client.db("test");
     const feesCollection = db.collection<FeesDoc>("fees");
 
     await feesCollection.updateOne(
