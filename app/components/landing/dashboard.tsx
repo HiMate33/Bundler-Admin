@@ -17,10 +17,23 @@ import {
 
 
 export default function Dashboard() {
-
-
-
   const [admins, setAdmins] = useState<{ name: string; email: string }[]>([]);
+  const [stats, setStats] = useState({ totalUsers: 0, subscribedUsers: 0 });
+
+useEffect(() => {
+  const fetchStats = async () => {
+    try {
+      const res = await fetch("/api/dashboard/stats");
+      const data = await res.json();
+      setStats(data);
+    } catch (err) {
+      console.error("Failed to fetch dashboard stats:", err);
+    }
+  };
+
+  fetchStats();
+}, []);
+
 
 useEffect(() => {
   const fetchAdmins = async () => {
@@ -43,7 +56,6 @@ useEffect(() => {
     <div>
       <div className="grid grid-cols-1  md:grid-cols-2 gap-8 p-1 md:p-8">
 
-      {/* Total Users */}
       <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col">
         <div className="flex items-center gap-6">
           <div className="bg-orange-500 p-5 rounded-lg shadow-lg">
@@ -52,7 +64,7 @@ useEffect(() => {
           <div className="flex-1 text-right">
             <p className="text-gray-500 text-sm font-medium">Total Users</p>
             <h3 className="text-2xl font-bold text-gray-800">
-              21
+              {stats.totalUsers}
             </h3>
           </div>
         </div>
@@ -63,7 +75,6 @@ useEffect(() => {
         </p>
       </div>
 
-      {/* Subscribers */}
       <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col">
         <div className="flex items-center gap-6">
           <div className="bg-green-500 p-5 rounded-lg shadow-lg">
@@ -71,7 +82,7 @@ useEffect(() => {
           </div>
           <div className="flex-1 text-right">
             <p className="text-gray-500 text-sm font-medium">Subscribers</p>
-            <h3 className="text-2xl font-bold text-gray-800">2</h3>
+            <h3 className="text-2xl font-bold text-gray-800">{stats.subscribedUsers}</h3>
           </div>
         </div>
         <hr className="my-3" />
@@ -81,7 +92,6 @@ useEffect(() => {
         </p>
       </div>
 
-      {/* Fixed Issues */}
       <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col">
         <div className="flex items-center gap-6">
           <div className="bg-red-500 p-5 rounded-lg shadow-lg">
@@ -98,7 +108,6 @@ useEffect(() => {
           Net income from all wallets</p>
       </div>
 
-      {/* Followers */}
       <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col">
         <div className="flex items-center gap-6">
           <div className="bg-cyan-500 p-5 rounded-lg shadow-lg">
