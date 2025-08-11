@@ -7,7 +7,7 @@ import {
   Search,
   DollarSign,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState,  useEffect } from "react";
 
 type User = {
   id: number;
@@ -32,6 +32,23 @@ export default function UserManagement() {
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
   const [visibleCount, setVisibleCount] = useState(10);
+  const [ stats, setStats ] = useState({totalUsers: 0, subscribedUsers: 0});
+
+
+  useEffect(() => {
+    const fetchStats =  async () => {
+      try{
+      const res = await fetch("/api/dashboard/stats");
+      const  data  = await res.json(); 
+      setStats(data);
+      } catch (err) {
+        console.error("Failed to fech usermanagement stats:", err);
+      }
+    }
+    fetchStats();
+  }, []);
+
+
 
   const toggleSelect = (id: number) => {
     setSelectedUsers((prev) =>
@@ -76,8 +93,8 @@ export default function UserManagement() {
             </div>
             <div>
               <p className="text-gray-600 font-medium">Users</p>
-              <h3 className="text-xl font-bold text-gray-800">{users.length}</h3>
-              <p className="text-sm text-gray-500">Target: 5,180</p>
+              <h3 className="text-xl font-bold text-gray-800">{stats.totalUsers}</h3>
+              <p className="text-sm text-gray-500">Target: 100,000</p>
             </div>
           </div>
           <div className="mt-4 flex justify-center">
@@ -94,8 +111,8 @@ export default function UserManagement() {
             </div>
             <div>
               <p className="text-gray-600 font-medium">Subscribers</p>
-              <h3 className="text-xl font-bold text-gray-800">7</h3>
-              <p className="text-sm text-gray-500">Target: 5,000</p>
+              <h3 className="text-xl font-bold text-gray-800">{stats.subscribedUsers}</h3>
+              <p className="text-sm text-gray-500">Target: 10,000</p>
             </div>
           </div>
           <div className="mt-4 flex justify-center">
@@ -106,7 +123,6 @@ export default function UserManagement() {
         </div>
       </div>
 
-      {/* Bot Users */}
       <div className="grid grid-cols-1">
         <div className="bg-white rounded-2xl shadow-lg p-4">
           <div className="flex items-center gap-4">
@@ -116,7 +132,7 @@ export default function UserManagement() {
             <div>
               <p className="text-gray-600 font-medium">Bot Users</p>
               <h3 className="text-xl font-bold text-gray-800">
-                {users.filter((u) => u.type === "Bot").length}
+                0
               </h3>
             </div>
           </div>
@@ -124,7 +140,6 @@ export default function UserManagement() {
         </div>
       </div>
 
-      {/* Table (Desktop) */}
       <div className="bg-white rounded-2xl shadow p-4 overflow-auto hidden md:block">
         <h2 className="text-lg font-semibold mb-4">User List</h2>
         <table className="min-w-full text-sm text-left">
@@ -205,7 +220,6 @@ export default function UserManagement() {
         )}
       </div>
 
-      {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-4">
         <button
           onClick={() => alert("Users List shown above")}

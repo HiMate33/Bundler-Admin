@@ -39,11 +39,9 @@ export default function Analytics() {
   const [activeUsers, setActiveUsers] = useState({ last24h: 0, last7d: 0 });
 
   useEffect(() => {
-    // Static mock for feature usage and active users
     setFeatureData(mockFeatureUsage);
     setActiveUsers(mockActiveUsers);
 
-    // Fetch wallets & balances for earnings
     async function fetchWalletData() {
       try {
         const res = await fetch("/api/wallets");
@@ -54,7 +52,6 @@ export default function Analytics() {
         }
 
         if (Array.isArray(data?.wallets)) {
-          // Pie chart data from each wallet balance
           const pieData = data.wallets.map((w: { type: any; address: any; balance: any; }) => ({
             name: w.type || w.address,
             value: w.balance,

@@ -60,7 +60,7 @@ useEffect(() => {
         const data = await res.json();
 
         if (data?.totalSol !== undefined) {
-          setTotalEarnings(data.totalSol); // total SOL in all wallets
+          setTotalEarnings(data.totalSol); 
         }
       } catch (err) {
         console.error("Failed to fetch wallet balances:", err);
@@ -187,10 +187,8 @@ useEffect(() => {
 ))}
 
   </div>
-  {/* Left Side - Big Admin Icon */}
   <div className="md:w-1/2 hidden md:flex justify-center items-center">
     <div className="bg-gray-500 p-8 rounded-full shadow-inner">
-      {/* Replace with Lucide <ShieldCheck /> or any admin icon */}
       <span className="text-6xl  text-white">
         <UserPlus size={20} />
       </span>
