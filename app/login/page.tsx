@@ -13,7 +13,7 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex flex-col items-center justify-center h-screen bg-[#0b0b0e] overflow-hidden text-white">
-      {/* Background Solana symbol animation */}
+      
       <div className="absolute inset-0 -z-10 opacity-5 animate-pulse">
         <img
           src="/solana-icon.png"
