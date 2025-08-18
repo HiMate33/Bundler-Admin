@@ -5,11 +5,13 @@ import RequireAuth from "./components/RequireAuth"
 export default function Home() {
   return (
     <div>
-     
+     <Main />
+      {/*
         <RequireAuth>
           <Main />
         </RequireAuth>
-     
+
+      */}
     </div>
   );
 }
